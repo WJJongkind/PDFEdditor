@@ -26,17 +26,6 @@ import util.PDFPageSplitter;
  * @author Wessel
  */
 public class PDFFiller {
-    
-    public static void main(String[] args) throws Exception {
-        FillConfiguration configuration = new FillConfiguration();
-        configuration.setOffsetX(10f);
-        configuration.setOffsetY(10f);
-        configuration.addConfigurationOnPage(0, new PDFCoordinate(100f, 100f), "Hello wooooooooooorld");
-        configuration.addConfigurationOnPage(1, new PDFCoordinate(200f, 200f), "This be page 2 my man");
-        configuration.saveConfiguration(new File("C:\\Users\\Wessel\\Documents\\Formulier telefoon.cfg"));
-        fillPDF("C:\\Users\\Wessel\\Documents\\Formulier telefoon.pdf", "C:\\Users\\Wessel\\Documents\\Formulier telefoon MERGED.pdf", configuration);
-    }
-    
     public static File fillPDF(String pdfPath, String targetPath, FillConfiguration configuration) throws Exception {
         List<File> separated = PDFPageSplitter.splitPDF(new File(pdfPath), true);
         
