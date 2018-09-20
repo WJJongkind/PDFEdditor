@@ -21,6 +21,10 @@ import util.PDFCoordinate;
  * @author Wessel
  */
 public class FillConfiguration {
+    
+    public static void main(String[] args) throws IOException {
+        FillConfiguration.loadConfiguration(new File("C:\\Users\\Wessel\\Documents\\Formulier telefoon.cfg"));
+    }
     private float offsetX, offsetY;
     
     private List<List<ConfigEntry>> configuration;
@@ -123,10 +127,10 @@ public class FillConfiguration {
             } else {
                 Matcher m = pattern.matcher(line);
                 if(m.find()) {
-                    String[] location = m.group(1).split(",");
+                    String[] location = m.group(2).split(",");
                     PDFCoordinate loc = new PDFCoordinate(Float.parseFloat(location[0]), Float.parseFloat(location[1]));
                     if(pageConfig != null) {
-                        pageConfig.add(new ConfigEntry(m.group(2), loc));
+                        pageConfig.add(new ConfigEntry(m.group(1), loc));
                     }
                 }
             }
@@ -137,6 +141,10 @@ public class FillConfiguration {
         return configuration;
     }
     
+    public List<List<ConfigEntry>> getConfigurations() {
+        return this.configuration;
+    }
+            
     public static class ConfigEntry {
         private PDFCoordinate location;
         private Object value;
@@ -161,5 +169,6 @@ public class FillConfiguration {
         public void setValue(Object value) {
             this.value = value;
         }
+        
     }
 }

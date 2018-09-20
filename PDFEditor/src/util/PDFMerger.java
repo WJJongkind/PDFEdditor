@@ -7,6 +7,7 @@ package util;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -17,16 +18,22 @@ import org.apache.pdfbox.pdmodel.PDPage;
  * @author Wessel
  */
 public class PDFMerger {
-    public static PDDocument mergePDF(List<File> sources) throws IOException {
+    public static void mergePDF(List<File> sources, File target) throws IOException {
         PDDocument doc = new PDDocument();
+        List<PDDocument> opened = new ArrayList<>();
         for(File file : sources) {
             PDDocument src = PDDocument.load(file);
             Iterator<PDPage> it = src.getPages().iterator();
             while(it.hasNext()) {
                 doc.addPage(it.next());
             } 
+            opened.add(src);
         }
         
-        return doc;
+        doc.save(target);
+        
+        for(PDDocument src : opened) {
+            src.close();
+        }
     }
 }

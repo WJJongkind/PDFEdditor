@@ -36,6 +36,8 @@ public class PDFPageSplitter {
             files.add(new File(dest + i));
         }
         
+        document.close();
+        
         return files;
     }
     

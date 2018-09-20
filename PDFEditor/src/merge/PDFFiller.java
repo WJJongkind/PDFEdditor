@@ -26,13 +26,31 @@ import util.PDFPageSplitter;
  * @author Wessel
  */
 public class PDFFiller {
+    
+    public static void main(String[] args) throws Exception {
+        FillConfiguration configuration = new FillConfiguration();
+        configuration.setOffsetX(10f);
+        configuration.setOffsetY(10f);
+        configuration.addConfigurationOnPage(0, new PDFCoordinate(100f, 100f), "Hello wooooooooooorld");
+        configuration.addConfigurationOnPage(1, new PDFCoordinate(200f, 200f), "This be page 2 my man");
+        configuration.saveConfiguration(new File("C:\\Users\\Wessel\\Documents\\Formulier telefoon.cfg"));
+        fillPDF("C:\\Users\\Wessel\\Documents\\Formulier telefoon.pdf", "C:\\Users\\Wessel\\Documents\\Formulier telefoon MERGED.pdf", configuration);
+    }
+    
     public static File fillPDF(String pdfPath, String targetPath, FillConfiguration configuration) throws Exception {
         List<File> separated = PDFPageSplitter.splitPDF(new File(pdfPath), true);
         
         List<File> filledPages = doFill(separated, configuration);
         
-        PDDocument merged = PDFMerger.mergePDF(filledPages);
-        merged.save(new File(targetPath));
+        PDFMerger.mergePDF(filledPages, new File(targetPath));
+        
+        for(File sep : separated) {
+            System.out.println("Cleaning file : " + sep.delete() + "    " + sep);
+        }
+        for(File fil : filledPages) {
+            System.out.println("Cleaning file : " + fil.delete() + "    " + fil);
+            System.out.println("Cleaning folder of file: " + fil.getParentFile().delete());
+        }
         return null;
     }
     
@@ -57,6 +75,9 @@ public class PDFFiller {
             
             files.add(new File(pages.get(i).getAbsolutePath() + "f"));
             finished.save(files.get(i));
+            finished.close();
+            overlay.close();
+            target.close();
         }
         
         return files;
@@ -71,12 +92,14 @@ public class PDFFiller {
         PDPageContentStream contentStream = new PDPageContentStream(overlay, page);
 
         contentStream.setFont(font, 10 );
-        contentStream.beginText();
         for(FillConfiguration.ConfigEntry entry : drawables) {
-            contentStream.newLineAtOffset(entry.getLocation().getX() + offsetX, entry.getLocation().getY() + offsetY);
+        contentStream.beginText();
+            System.out.println("Showing text at: " + (entry.getLocation().getX() + offsetX) + "    " + (841.68 - entry.getLocation().getY() + offsetY));
+            System.out.println("Text is: " + entry.getValue());
+            contentStream.newLineAtOffset(entry.getLocation().getX() + offsetX, (int)(841.68 - entry.getLocation().getY() + offsetY));
             contentStream.showText(entry.getValue().toString());
+            contentStream.endText();
         }
-        contentStream.endText();
         
         contentStream.close();
         return overlay;
