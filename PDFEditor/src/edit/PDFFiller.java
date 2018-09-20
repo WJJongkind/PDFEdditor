@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package merge;
+package edit;
 
 import config.FillConfiguration;
 import java.io.File;
@@ -18,8 +18,6 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import util.PDFCoordinate;
-import util.PDFMerger;
-import util.PDFPageSplitter;
 
 /**
  *

@@ -21,10 +21,6 @@ import util.PDFCoordinate;
  * @author Wessel
  */
 public class FillConfiguration {
-    
-    public static void main(String[] args) throws IOException {
-        FillConfiguration.loadConfiguration(new File("C:\\Users\\Wessel\\Documents\\Formulier telefoon.cfg"));
-    }
     private float offsetX, offsetY;
     
     private List<List<ConfigEntry>> configuration;
